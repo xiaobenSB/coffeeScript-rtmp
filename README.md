@@ -3,6 +3,7 @@
 第三步：coffee server.coffee         <br/>
 第四步： ffmpeg -re -i input.mp4 -c:v copy -c:a copy -f flv rtmp://localhost/live/这里可以随便起个名字 （这步是用ffmpeg把input.mp4输入rtmp流里） <br/>
 第五步： 打开vlc媒体里的网络串流输入你的rtmp流进行播放（注意得跟ffmpeg把MP4输入流时同步,可能这个rtmp是实时播放里面输入流吧，rtmp输入的数据不会缓存，只能实时获取,也就是当我们播放rtmp流时，它先去查找输入流里有没有东西，没有就不能播放）    <br/>
+第六步： 如果想用node xx打开,使用coffee -c . 就会把当前目录（当前子级目录也包括）下的.coffee文件打包成.js文件，也就是编译成js
 
 
 
