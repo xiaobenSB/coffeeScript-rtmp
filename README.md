@@ -1,3 +1,11 @@
+第一步：下载coffeeScript 和ffmpeg(ffmpeg官网下的) 和VLC（用来播放rtmp流）
+第二步：npm install
+第三步：coffee server.coffee
+第四步： ffmpeg -re -i input.mp4 -c:v copy -c:a copy -f flv rtmp://localhost/live/这里可以随便起个名字 （这步是用ffmpeg把input.mp4输入rtmp流里）
+第五步： 打开vlc媒体里的网络串流输入你的rtmp流进行播放（注意得跟ffmpeg把MP4输入流时同步,可能这个rtmp是实时播放里面输入流吧，rtmp输入的数据不会缓存，只能实时获取）
+
+
+
 ### RTSP, RTMP, and HTTP server in Node.js
 
 - Supports RTSP, RTMP/RTMPE/RTMPT/RTMPTE, and HTTP.
