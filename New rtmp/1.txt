@@ -1,0 +1,38 @@
+http那里的作用是 ：把视频（rtmp）流编码成flv传到http服务器里，对应rtmp的/live/（房间），如rtmp://xx/live/xiaoben对应http://xx/live/xiaoben.flv
+
+trans那里的作用是：把视频（rtmp）流用ffmpeg软件编码成hls(后缀名为m3u8和ts),hls默认存放在当前程序执行目录下的media/live/stream(也就是上面的xiaoben)文件里，hls编码的视频后缀名是m3u8和ts,
+你只需要请求m3u8文件，前端的video框架就会根据里面的内容去请求ts文件
+
+
+如下面使用hls时服务器处理
+
+const http = require('http');
+const fs = require('fs');
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  
+  res.statusCode = 200;
+  if(req.url==="/a/index.m3u8"){                   //只要请求m3u8,前端就会根据里面的信息去请求ts,请求的路由跟他是同一个路由，也就是/a
+  fs.readFile('./index.m3u8',function(err,data){
+	  if(err) res.end('文件获取失败！');
+	  res.end(data);
+  })
+  }else if(req.url.indexOf('/a')==0){    //这里只要处理他请求的是哪个ts
+	  fs.readFile('.'+req.url.split('/a')[1],function(err,data){
+	  if(err) res.end('文件获取失败！');
+	  res.end(data);
+  })
+  }else{
+	  res.setHeader('Content-Type', 'text/html');
+	   fs.readFile('./index.html',function(err,data){
+	  if(err) res.end(''+err);
+	  res.end(data);
+  })
+  }
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
